@@ -23,7 +23,7 @@ public class Character : MonoBehaviour
 
     
 
-    public Transform MyTarget { get; set; }
+    public Character MyTarget { get; set; }
     
     public Animator MyAnimator { get; set; }
 
@@ -37,7 +37,7 @@ public class Character : MonoBehaviour
     protected Coroutine actionRoutine;
 
     [SerializeField]
-    protected Transform hitBox;
+    private Transform hitBox;
 
     [SerializeField]
     protected Stat health;
@@ -76,6 +76,9 @@ public class Character : MonoBehaviour
     public Rigidbody2D MyRigidbody { get => myRigidbody;  }
 
     public SpriteRenderer MySpriteRenderer { get; set; }
+
+
+    public Transform MyHitBox { get => hitBox; set => hitBox = value; }
 
     protected virtual void Start()
     {
@@ -166,7 +169,7 @@ public class Character : MonoBehaviour
 
    
 
-    public virtual void TakeDamage(float damage,Transform source)
+    public virtual void TakeDamage(float damage, Character source)
     {
         
 
@@ -175,7 +178,7 @@ public class Character : MonoBehaviour
         if (health.MyCurrentValue <= 0)
         {
 
-            MyRigidbody.velocity = Direction;
+            Direction = Vector2.zero;
             MyRigidbody.velocity = Direction;
             GameManager.MyInstance.OnKillConfirmed(this);
             MyAnimator.SetTrigger("die");

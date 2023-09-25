@@ -41,14 +41,17 @@ public class Enemy : Character, IInteractable
     {
         get
         {
-            return Vector2.Distance(transform.position, MyTarget.position) < MyAggroRange;
+            return Vector2.Distance(transform.position, MyTarget.transform.position) < MyAggroRange;
         }
     }
     
 
     private IState currentState;
 
-    public float MyAttackRange { get; set; }
+    
+
+    [SerializeField]
+    private float attackRange;
 
     public float MyAttackTime { get; set; }
 
@@ -59,6 +62,8 @@ public class Enemy : Character, IInteractable
 
 
     public Astar MyAstar { get => astar;  }
+
+    public float MyAttackRange { get => attackRange; set => attackRange = value; }
 
     protected override void Update()
     {
@@ -81,11 +86,11 @@ public class Enemy : Character, IInteractable
 
     }
 
-    public Transform Select()
+    public Character Select()
     {
         healthGroup.alpha = 1;
 
-        return hitBox;
+        return this;
 
     }
 
@@ -102,7 +107,7 @@ public class Enemy : Character, IInteractable
     {
         if (canDoDamage)
         {
-            Player.MyInstance.TakeDamage(damage, transform);
+            MyTarget.TakeDamage(damage, this);
             canDoDamage = false;
         }
     }
@@ -112,7 +117,7 @@ public class Enemy : Character, IInteractable
         canDoDamage = true;
     }
 
-    public override void TakeDamage(float damage, Transform source)
+    public override void TakeDamage(float damage, Character source)
     {
 
         if (!(currentState is EvadeState))
@@ -136,6 +141,12 @@ public class Enemy : Character, IInteractable
        
     }
 
+    protected override void Start()
+    {
+        base.Start();
+        MyAnimator.SetFloat("y", -1);
+    }
+
     protected void Awake()
     {
         SpriteRenderer sr;
@@ -144,7 +155,7 @@ public class Enemy : Character, IInteractable
         health.Initialize(initHealth, initHealth);
         MyStartPosition = transform.position;
         MyAggroRange = initAggroRange;
-        MyAttackRange = 0.5f;
+        
         ChangeState(new IdleState());
     }
 
@@ -161,14 +172,14 @@ public class Enemy : Character, IInteractable
         currentState.Enter(this);
     }
 
-    public void SetTarget(Transform source)
+    public void SetTarget(Character target)
     {
         if(MyTarget == null && !(currentState is EvadeState))
         {
-            float distance = Vector2.Distance(transform.position, source.position);
+            float distance = Vector2.Distance(transform.position, target.transform.position);
             MyAggroRange = initAggroRange;
             MyAggroRange += distance;
-            MyTarget = source;
+            MyTarget = target;
         }
     }
 

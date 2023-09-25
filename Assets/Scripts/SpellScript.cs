@@ -10,7 +10,7 @@ public class SpellScript : MonoBehaviour
 
     private Rigidbody2D myRigidBody;
 
-    private Transform source;
+    private Character source;
 
     private int damage;
 
@@ -29,7 +29,7 @@ public class SpellScript : MonoBehaviour
         
     }
 
-    public void Initialize(Transform target, int damage, Transform source)
+    public void Initialize(Transform target, int damage, Character source)
     {
         this.MyTarget = target;
         this.damage = damage;

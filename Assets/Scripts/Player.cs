@@ -42,6 +42,8 @@ public class Player : Character
     [SerializeField]
     private Crafting profession;
 
+    private Vector2 initPos;
+
     public Coroutine MyInitRoutine { get; set; }
 
     private int exitIndex = 2;
@@ -101,6 +103,7 @@ public class Player : Character
         MyMana.Initialize(initMana, initMana);
         MyXp.Initialize(0, Mathf.Floor(100 * MyLevel * Mathf.Pow(MyLevel, 0.5f)));
         levelText.text = MyLevel.ToString();
+        initPos = transform.parent.position;
     }
 
     public void SetLimits(Vector3 min, Vector3 max)
@@ -217,6 +220,17 @@ public class Player : Character
         }
     }
 
+    public IEnumerator Respawn()
+    {
+        MySpriteRenderer.enabled = false;
+        yield return new WaitForSeconds(5f);
+        health.Initialize(initHealth, initHealth);
+        MyMana.Initialize(initMana, initMana);
+        transform.parent.position = initPos;
+        MySpriteRenderer.enabled = true;
+        MyAnimator.SetTrigger("respawn");
+    }
+
     private void StopInit()
     {
         if (MyInitRoutine != null)
@@ -250,7 +264,7 @@ public class Player : Character
 
     private IEnumerator AttackRoutine(ICastable castable)
     {
-        Transform currentTarget = MyTarget;
+        Transform currentTarget = MyTarget.MyHitBox;
 
         yield return actionRoutine = StartCoroutine(ActionRoutine(castable));
 
@@ -260,7 +274,7 @@ public class Player : Character
 
             SpellScript s = Instantiate(newSpell.MySpellPrefab, exitPoints[exitIndex].position, Quaternion.identity).GetComponent<SpellScript>();
 
-            s.Initialize(currentTarget, newSpell.MyDamage, transform);
+            s.Initialize(currentTarget, newSpell.MyDamage, this);
         }
 
         StopAction();

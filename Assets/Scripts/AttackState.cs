@@ -17,6 +17,8 @@ public class AttackState : IState
         parent.Direction = Vector2.zero;
     }
 
+    
+
     public void Exit()
     {
        
@@ -33,7 +35,7 @@ public class AttackState : IState
 
         if (parent.MyTarget != null)
         {
-            float distance = Vector2.Distance(parent.MyTarget.parent.position, parent.transform.parent.position);
+            float distance = Vector2.Distance(parent.MyTarget.transform.parent.position, parent.transform.parent.position);
 
             if (distance >= parent.MyAttackRange + extraRange && !parent.IsAttacking)
             {
