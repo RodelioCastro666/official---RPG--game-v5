@@ -161,6 +161,10 @@ public class Player : Character
             }
 
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(AttackSword());
+        }
 
 
         if (Input.GetKey(KeybindManager.MyInstance.Keybinds["RIGHTB"]))
@@ -301,6 +305,21 @@ public class Player : Character
         this.goal = goal;
     }
 
+    private IEnumerator AttackSword()
+    {
+        if (!IsAttacking)
+        {
+            IsAttacking = true;
+            MyAnimator.SetBool("attackSword", true);
+
+            yield return new WaitForSeconds(0.5f);
+
+            StopAttack();
+        }
+
+
+    }
+
     public void ClickToMove()
     {
         if(MyPath != null)
@@ -418,6 +437,7 @@ public class Player : Character
             MyAnimator.SetBool("attack", IsAttacking);
         }
 
+        
     }
 
     

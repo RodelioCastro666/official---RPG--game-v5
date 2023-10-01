@@ -125,7 +125,12 @@ public class Character : MonoBehaviour
     {
         if (IsAlive)
         {
-            if (IsMoving)
+            if (IsAttacking)
+            {
+                ActivateLayer("AttackSword");
+                direction = Vector2.zero;
+            }
+            else if (IsMoving)
             {
 
                 ActivateLayer("Walk");
@@ -137,10 +142,7 @@ public class Character : MonoBehaviour
 
 
             }
-            else if (IsAttacking)
-            {
-                ActivateLayer("Attack");
-            }
+            
             else
             {
                 ActivateLayer("Idle");
@@ -155,7 +157,16 @@ public class Character : MonoBehaviour
 
     }
 
-    
+    public void StopAttack()
+    {
+
+
+        // StopCoroutine(attackRoutine);
+        IsAttacking = false;
+        MyAnimator.SetBool("attackSword", IsAttacking);
+
+
+    }
 
     public void ActivateLayer(string layerName)
     {
