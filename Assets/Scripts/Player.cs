@@ -459,9 +459,12 @@ public class Player : Character
 
     public void OnTriggerExit2D(Collider2D collision)
     {
+        
+
         if (collision.tag == "Enemy" || collision.tag == "Interactable")
         {
-            if(MyInteractables.Count > 0)
+            Debug.Log("jkjkj");
+            if (MyInteractables.Count > 0)
             {
                 IInteractable interactable = MyInteractables.Find(x => x == collision.GetComponent<IInteractable>());
 
@@ -476,6 +479,8 @@ public class Player : Character
            
         }
     }
+
+
 
    
 

@@ -37,6 +37,10 @@ public class Enemy : Character, IInteractable
 
     public float MyAggroRange { get; set;  }
 
+    public static Enemy instance;
+
+   
+
     public bool InRange
     {
         get
@@ -108,13 +112,18 @@ public class Enemy : Character, IInteractable
         if (canDoDamage)
         {
             MyTarget.TakeDamage(damage, this);
+            
             canDoDamage = false;
+           
         }
+
+        
     }
 
     public void CanDoDamage()
     {
         canDoDamage = true;
+        
     }
 
     public override void TakeDamage(float damage, Character source)
@@ -245,4 +254,13 @@ public class Enemy : Character, IInteractable
 
         return true;
     }
+
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.CompareTag("uy"))
+    //    {
+    //        Vector2 difference = transform.position - collision.transform.position;
+    //        transform.position = new Vector2(transform.position.x + difference.x, transform.position.y + difference.y);
+    //    }
+    //}
 }

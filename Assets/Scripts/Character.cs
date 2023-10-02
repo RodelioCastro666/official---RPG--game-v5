@@ -34,6 +34,8 @@ public class Character : MonoBehaviour
 
     public bool IsAttacking { get; set; }
 
+    
+
     protected Coroutine actionRoutine;
 
     [SerializeField]
@@ -125,10 +127,12 @@ public class Character : MonoBehaviour
     {
         if (IsAlive)
         {
+           
             if (IsAttacking)
             {
-                ActivateLayer("AttackSword");
+                ActivateLayer("Attack");
                 direction = Vector2.zero;
+                
             }
             else if (IsMoving)
             {
@@ -138,7 +142,7 @@ public class Character : MonoBehaviour
 
                 MyAnimator.SetFloat("x", Direction.x);
                 MyAnimator.SetFloat("y", Direction.y);
-
+               
 
 
             }
@@ -146,12 +150,14 @@ public class Character : MonoBehaviour
             else
             {
                 ActivateLayer("Idle");
+                
             }
            
         }
         else
         {
             ActivateLayer("Death");
+            
         }
 
 

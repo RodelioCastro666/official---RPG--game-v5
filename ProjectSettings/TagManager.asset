@@ -10,6 +10,8 @@ TagManager:
   - Keybind
   - Interactable
   - Ground
+  - breakable
+  - uy
   layers:
   - Default
   - TransparentFX
